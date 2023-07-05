@@ -67,7 +67,7 @@ class ComposerUpdate(UpdateView):
     fields = ['name', 'image', 'bio', 'verified_artist']
     template_name = "composer_update.html"
     def get_success_url(self):
-        return reverse('composer_detial', kwargs={'pk': self.object.pk})
+        return reverse('composer_detail', kwargs={'pk': self.object.pk})
 
 class ComposerDelete(DeleteView):
     model = Composer
