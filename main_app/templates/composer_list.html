@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% comment %} for head title tags and helping us with SEO {% endcomment %}
+{% block title %}Composer{% endblock  %}
+
+{% block content %}
+
+<h1 class="title is-2">Top Showtune Makers</h1>
+
+<form class="mb-5" method="get">
+    <div class="field has-addons">
+      <div class="control">
+        <input class="input" type="text" name="name" placeholder="name" />
+      </div>
+      <div class="control">
+        <input class="button is-dark" type="submit" value="Search" />
+      </div>
+    </div>
+    <a class="button is-warning" href="{% url 'composer_list' %}">Clear Search</a>
+    <a class="button is-warning" href="{% url 'composer_create' %}">Add Composer</a>
+  </form>
+<div class="gallery">
+  {% for composer in composers %}
+  <a href="{% url 'composer_detail' composer.pk %}">
+    <div class="card">
+      <div class="card-image">
+        <figure class="image is-square">
+          <img src="{{composer.image}}" alt="{{composer.name}}" />
+        </figure>
+      </div>
+      <div class="card-header">
+        <p class="card-header-title">{{composer.name}}</p>
+      </div>
+    </div>
+  </a>
+	{% empty %}
+  <article class="message">
+    <div class="message-header">
+      <p>No Composers Available</p>
+    </div>
+  </article>
+  {% endfor %}
+</div>
+{% endblock %}

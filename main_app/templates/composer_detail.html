@@ -1,0 +1,100 @@
+{% extends 'base.html' %} 
+{% block content %}
+<div class="detail__img">
+    <img src="{{composer.image}}" alt="{{composer.name}}" />
+</div>
+<div class="detail__name">
+    {% if composer.verified_artist %}
+    <div class="icon-text">
+        <span class="icon has-text-info">
+            <i class="fas fa-check-circle"></i>
+        </span>
+        <span>Verified</span>
+    </div>
+    {% endif %}
+    <h1 class="title">{{composer.name}}</h1>
+</div>
+<div class="detail__container">
+    <div class="buttons">
+        <a href="{% url 'composer_update' composer.pk %}" class="button is-info">
+            <span class="icon">
+                <i class="fas fa-edit"></i>
+            </span>
+        </a>
+        <a href="{% url 'composer_delete' composer.pk %}" class="button is-danger">
+            <span class="icon">
+                <i class="fas fa-trash-alt"></i>
+            </span>
+        </a>
+    </div>
+    <div class="detail__shows mb-5">
+        <h3 class="title is-3">Shows</h3>
+        <form class="mb-5" action="{% url 'show_create' composer.pk %}" method="post">
+            {% csrf_token %}
+            <div class="field has-addons">
+                <div class="control">
+                    <input
+                        class="input"
+                        type="text"
+                        name="title"
+                        placeholder="Title"
+                        required
+                    />
+                </div>
+                <div class="control">
+                    <input
+                        class="input"
+                        type="number"
+                        name="year"
+                        placeholder="Year"
+                        min="1"
+                        required
+                    />
+                </div>
+                <div class="control">
+                    <input class="button is-dark" type="submit" value="Add Show" />
+                </div>
+            </div>
+        </form>
+    
+        {% for show in composer.shows.all %}
+        <div class="show">
+          <span>{{forloop.counter}}</span>
+          <span class="has-text-weight-bold">{{show.title}}</span>
+          <span>({{show.year}})</span>
+          <span>
+            <div class="dropdown">
+                <div class="dropdown-trigger">
+                    <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                        <span>Add to Favorites</span>
+                        <span class="icon is-small">
+                            <i class="fas fa-angle-down" aria-hidden="true"></i>
+                        </span>
+                    </button>
+                </div>
+                <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                    <div class="dropdown-content">
+                        {% for favorite in favorites %}
+                        <a href="{% url 'favorite_show_assoc' favorite.pk show.pk %}?assoc=add" class="dropdown-item">{{favorite.title}}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+          </span>
+        </div>
+            {% empty %}
+        <article class="message">
+          <div class="message-header">
+            <p>No Shows Available</p>
+          </div>
+        </article>
+    
+        {% endfor %}
+      </div>
+    <div class="detail__about">
+        <h4 class="title is-4">About</h4>
+        <p class="has-text-weight-semibold">{{composer.bio}}</p>
+    </div>
+</div>
+
+{% endblock %}

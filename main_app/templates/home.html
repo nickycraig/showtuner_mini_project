@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1 class="title is-1">Showtuner Home</h1>
+<div class="home__favorites">
+    {% for favorite in favorites %}
+        <div class="favorite mb-5">
+            <h3 class="title is-3 has-text-succes">{{favorite.title}}</h3>
+            <hr />
+
+            {% for show in favorite.shows.all %}
+                <div class="show">
+                    <span>{{forloop.counter}}</span>
+                    <span><b>{{show.title}}</b></span>
+                    <span>
+                        <a href="{% url 'favorite_show_assoc' favorite.pk show.pk %}?assoc=remove" class="button is-warning is-outlined">
+                            <span class="icon is-small">
+                                <i class="fas fa-times"></i>
+                            </span>
+                        </a>
+                    </span>
+                </div>
+            {% endfor %}
+        </div>
+    {% empty %}
+        <div class="favorite mb-5">There are no favorite shows here!</div>
+    {% endfor %}
+</div>
+{% endblock %}
