@@ -1,4 +1,4 @@
-pip3 install -r deps.text
+pip3 install -r deps.txt
 
 python manage.py collectstatic --no-input
 
